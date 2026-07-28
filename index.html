@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>小厨神驾到</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="小厨神驾到" />
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJz48cmVjdCB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgcng9JzIyJyBmaWxsPScjZThhODU0Jy8+PHRleHQgeD0nNTAnIHk9JzczJyBmb250LXNpemU9JzU4JyB0ZXh0LWFuY2hvcj0nbWlkZGxlJz7wn42zPC90ZXh0Pjwvc3ZnPg==" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJz48cmVjdCB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgcng9JzIyJyBmaWxsPScjZThhODU0Jy8+PHRleHQgeD0nNTAnIHk9JzczJyBmb250LXNpemU9JzU4JyB0ZXh0LWFuY2hvcj0nbWlkZGxlJz7wn42zPC90ZXh0Pjwvc3ZnPg==" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="phone">
+    <!-- 顶部栏 -->
+    <header class="app-header">
+      <div class="app-header__title" id="headerTitle">小厨神驾到</div>
+      <div class="app-header__sub" id="headerSub">家庭：—</div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="screen" id="screen">
+      <!-- ===== 点菜（参考图风格） ===== -->
+      <section class="page page--order" data-page="order">
+        <div class="hero-banner">
+          <div class="hero-banner__bg"></div>
+          <div class="hero-banner__text">今天吃什么呀</div>
+        </div>
+
+        <div class="toolbar toolbar--order">
+          <button class="btn btn--ghost btn--sm" id="btnShopping">🛒 采购清单(<span id="cartCount">0</span>)</button>
+          <button class="btn btn--primary btn--sm" id="btnTodayMenu">今日菜单</button>
+        </div>
+
+        <div class="order-layout">
+          <aside class="order-filters" id="orderFilters"></aside>
+          <div class="order-catalog" id="orderCatalog"></div>
+        </div>
+      </section>
+
+      <!-- ===== 冰箱 ===== -->
+      <section class="page page--fridge" data-page="fridge" hidden>
+        <div class="fridge-filters" id="fridgeFilters"></div>
+        <div class="toolbar">
+          <input class="input input--search" id="fridgeSearch" placeholder="搜索食材…" />
+          <button class="btn btn--primary" id="btnAddIngredient">＋ 新增</button>
+        </div>
+        <div id="fridgeList" class="list"></div>
+      </section>
+
+      <!-- ===== 我的（统一背景，按名称排列） ===== -->
+      <section class="page" data-page="mine" hidden>
+        <div class="mine-body">
+          <!-- 我的家庭 -->
+          <div class="mine-block">
+            <div class="mine-block__title">我的家庭</div>
+            <div class="mine-field">
+              <input class="input" id="familyName" placeholder="例如：幸福一家" />
+              <button class="btn btn--primary btn--sm" id="btnSaveFamily">保存</button>
+            </div>
+          </div>
+
+          <!-- 食记（并入我的） -->
+          <div class="mine-block">
+            <div class="mine-block__title">食记</div>
+            <div id="diaryList"></div>
+          </div>
+
+          <!-- 厨房 -->
+          <div class="mine-block">
+            <div class="mine-block__title">厨房</div>
+            <div class="mine-row mine-row--link" data-goto="kitchen">
+              <span class="mine-row__icon">🍳</span>
+              <span class="mine-row__main">
+                <span class="mine-row__name">所有菜谱管理</span>
+                <span class="mine-row__sub">新增 / 编辑 / 删除菜谱</span>
+              </span>
+              <span class="arrow">›</span>
+            </div>
+          </div>
+
+          <!-- 家庭成员 -->
+          <div class="mine-block">
+            <div class="mine-block__title">家庭成员 <button class="btn btn--sm btn--ghost" id="btnAddMember">＋ 添加</button></div>
+            <div id="memberList"></div>
+          </div>
+
+          <!-- 数据与示例 -->
+          <div class="mine-block">
+            <div class="mine-block__title">数据与示例</div>
+            <div class="mine-actions">
+              <button class="btn btn--ghost btn--sm" id="btnSeed">载入示例数据</button>
+              <button class="btn btn--danger-ghost btn--sm" id="btnReset">清空所有数据</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 厨房（菜谱管理，从我的进入） ===== -->
+      <section class="page" data-page="kitchen" hidden>
+        <div class="toolbar">
+          <button class="btn btn--ghost btn--sm" id="btnBackFromKitchen">‹ 返回</button>
+          <input class="input input--search" id="recipeSearch" placeholder="搜索菜谱…" style="flex:1" />
+          <button class="btn btn--primary btn--sm" id="btnAddRecipe">＋ 新增</button>
+        </div>
+        <div id="recipeList" class="recipe-grid"></div>
+      </section>
+    </main>
+
+    <!-- 底部导航 -->
+    <nav class="tabbar">
+      <button class="tab" data-tab="order"><span class="tab__icon">🍽️</span><span class="tab__label">点菜</span></button>
+      <button class="tab" data-tab="fridge"><span class="tab__icon">🧊</span><span class="tab__label">冰箱</span></button>
+            <button class="tab" data-tab="mine"><span class="tab__icon">👤</span><span class="tab__label">我的</span></button>
+    </nav>
+  </div>
+
+  <!-- 通用弹窗 -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal__mask" data-close></div>
+    <div class="modal__panel">
+      <div class="modal__head">
+        <span id="modalTitle">标题</span>
+        <button class="modal__close" data-close>✕</button>
+      </div>
+      <div class="modal__body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- 今日菜单弹窗（底部大面板） -->
+  <div class="sheet" id="todaySheet" hidden>
+    <div class="sheet__mask" id="sheetMask"></div>
+    <div class="sheet__panel">
+      <div class="sheet__head">
+        <span class="sheet__title">今日菜单</span>
+        <button class="sheet__close" id="sheetClose">✕</button>
+      </div>
+      <div class="sheet__body" id="sheetBody"></div>
+      <div class="sheet__foot">
+        <button class="btn btn--primary btn--block" id="btnPlaceOrder">去下单</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
