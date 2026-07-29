@@ -285,6 +285,10 @@
   function save(data) {
     try { localStorage.setItem(KEY, JSON.stringify(data)); }
     catch (e) { memory = data; /* 内存模式，不持久化 */ }
+    // Firebase 同步（如果已初始化）
+    if (window.FirebaseSync && window.FirebaseSync.ready()) {
+      window.FirebaseSync.save(data);
+    }
   }
 
   var data = load();
@@ -330,7 +334,19 @@
     // 工具
     today: today,
     uid: uid,
-    addDays: addDays
+    addDays: addDays,
+
+    // Firebase 同步
+    replaceAll: function (newData) {
+      // 保留 id 生成函数不变
+      data.family = newData.family || data.family;
+      data.members = newData.members || data.members;
+      data.ingredients = newData.ingredients || data.ingredients;
+      data.recipes = newData.recipes || data.recipes;
+      data.menu = newData.menu || data.menu;
+      data.diary = newData.diary || data.diary;
+      save(data);
+    }
   };
 
   global.Store = Store;

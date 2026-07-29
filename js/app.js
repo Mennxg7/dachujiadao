@@ -834,6 +834,10 @@
       }
     };
 
+    // 云同步设置
+    $('#btnSetupSync').onclick = openSyncSetup;
+    updateSyncStatus();
+
     // 厨房入口等子页面跳转（data-goto）
     $('#screen').addEventListener('click', function (e) {
       var goto = e.target.closest('[data-goto]');
@@ -886,6 +890,150 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     bind();
+    // 尝试 Firebase 同步
+    initFirebaseSync();
     switchTab('order');
   });
+
+  /** Firebase 实时同步初始化 */
+  function initFirebaseSync() {
+    // 检查 URL 是否带了 Firebase 配置
+    var params = new URLSearchParams(window.location.search);
+    var fbConfigStr = params.get('fb');
+
+    // 也支持从 localStorage 读取已保存的配置
+    if (!fbConfigStr) {
+      try { fbConfigStr = localStorage.getItem('dachujiadao_fb_config'); } catch(e) {}
+    }
+
+    if (!fbConfigStr) return; // 没有配置，纯本地模式
+
+    try {
+      var fbConfig = JSON.parse(decodeURIComponent(fbConfigStr));
+      if (!fbConfig.apiKey || !fbConfig.databaseURL) return;
+
+      // 保存配置到 localStorage 方便下次自动连接
+      try { localStorage.setItem('dachujiadao_fb_config', fbConfigStr); } catch(e) {}
+
+      if (!window.FirebaseSync || !window.FirebaseSync.init(fbConfig)) {
+        console.warn('Firebase 初始化失败，使用本地模式');
+        return;
+      }
+
+      // 先从 Firebase 拉取最新数据
+      window.FirebaseSync.load(function (remoteData) {
+        if (remoteData) {
+          Store.replaceAll(remoteData);
+          switchTab(currentTab);
+          console.log('✅ 已从云端加载数据');
+        } else {
+          // 云端无数据，把本地数据推上去
+          window.FirebaseSync.save(Store.get());
+          console.log('📤 本地数据已上传到云端');
+        }
+      });
+
+      // 监听远端变化，自动刷新 UI
+      window.FirebaseSync.watch(function (remoteData) {
+        if (!remoteData) return;
+        var local = Store.get();
+        // 简单对比：如果远端更新了就刷新
+        if (JSON.stringify(remoteData) !== JSON.stringify(local)) {
+          Store.replaceAll(remoteData);
+          switchTab(currentTab);
+          console.log('🔄 检测到其他设备的更新，已同步');
+        }
+      });
+
+    } catch (e) {
+      console.error('Firebase 配置解析失败：', e);
+    }
+  }
+
+  /** 更新云同步状态显示 */
+  function updateSyncStatus() {
+    var el = $('#syncStatus'); if (!el) return;
+    if (window.FirebaseSync && window.FirebaseSync.ready()) {
+      el.textContent = '✅ 已启用 · 多设备实时同步中';
+      el.style.color = '#4a8c3a';
+    } else {
+      try {
+        var has = localStorage.getItem('dachujiadao_fb_config');
+        el.textContent = has ? '⚠️ 已保存配置但未连接 · 检查网络' : '未启用 · 数据仅保存在本设备';
+      } catch(e) {
+        el.textContent = '未启用 · 数据仅保存在本设备';
+      }
+      el.style.color = '';
+    }
+  }
+
+  /** 打开云同步设置弹窗 */
+  function openSyncSetup() {
+    var box = el('div');
+    box.appendChild(el('p', 'hint', '配置 Firebase Realtime Database 后，你和朋友的操作会实时同步。'));
+    box.appendChild(el('p', 'hint', '免费额度足够家庭日常使用。'));
+
+    // 读取已保存的配置
+    var saved = '';
+    try { saved = localStorage.getItem('dachujiadao_fb_config') || ''; } catch(e) {}
+
+    var txt = el('textarea', 'input');
+    txt.placeholder = '粘贴 Firebase 配置 JSON…';
+    txt.style.cssText = 'height:120px;font-size:12px;font-family:monospace;';
+    if (saved) {
+      try {
+        var savedObj = JSON.parse(decodeURIComponent(saved));
+        txt.value = JSON.stringify(savedObj, null, 2);
+      } catch(e) { txt.value = saved; }
+    }
+
+    box.appendChild(field('Firebase 配置', txt));
+
+    // 操作按钮
+    var actions = el('div'); actions.style.cssText = 'display:flex;gap:8px;margin-top:12px;';
+
+    var saveBtn = el('button', 'btn btn--primary', '保存并连接');
+    saveBtn.style.flex = '1';
+    saveBtn.onclick = function () {
+      try {
+        var cfg = JSON.parse(txt.value.trim());
+        if (!cfg.apiKey || !cfg.databaseURL) { toast('请填写 apiKey 和 databaseURL'); return; }
+        var cfgStr = encodeURIComponent(JSON.stringify(cfg));
+        localStorage.setItem('dachujiadao_fb_config', cfgStr);
+        toast('配置已保存，刷新页面后生效 ✨');
+        closeModal();
+        // 提示用户刷新
+        setTimeout(function () {
+          if (confirm('配置已保存！是否刷新页面启用云同步？')) {
+            location.reload();
+          }
+        }, 500);
+      } catch (e) { toast('JSON 格式不正确，请检查'); }
+    };
+
+    var clearBtn = el('button', 'btn btn--danger-ghost', '断开同步');
+    clearBtn.onclick = function () {
+      if (confirm('确定断开云同步？数据将仅保留在本设备。')) {
+        try { localStorage.removeItem('dachujiadao_fb_config'); } catch(e) {}
+        toast('已断开云同步');
+        closeModal();
+        updateSyncStatus();
+      }
+    };
+
+    actions.appendChild(saveBtn);
+    actions.appendChild(clearBtn);
+    box.appendChild(actions);
+
+    // 如何获取配置的帮助信息
+    box.appendChild(el('div', 'sub-title', '📖 如何获取配置？'));
+    var help = el('div', 'hint');
+    help.innerHTML = '1. 打开 <a href="https://console.firebase.google.com" target="_blank">Firebase Console</a><br>' +
+      '2. 创建项目 → Realtime Database → 创建数据库（测试模式）<br>' +
+      '3. 项目设置 → 添加应用 → Web 应用 → 复制配置<br>' +
+      '4. 粘贴到上方输入框，保存即可';
+    box.appendChild(help);
+
+    openModal('云同步设置', box);
+  }
 })();
