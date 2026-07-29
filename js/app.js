@@ -15,7 +15,7 @@
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
-  var CATEGORIES = ['肉类', '蔬菜', '水果', '蛋奶', '其他'];
+  var CATEGORIES = ['肉类', '蔬菜', '水果', '蛋奶', '主食'];
 
   /* 点菜页左侧分类定义 */
   var ORDER_CATS = [

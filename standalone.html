@@ -830,18 +830,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         { id: 'i3', name: '五花肉', category: '肉类', count: 500, unit: '克', location: '冷藏室', expire: addDays(5) },
         { id: 'i4', name: '排骨', category: '肉类', count: 500, unit: '克', location: '冷冻室', expire: addDays(20) },
         { id: 'i5', name: '葱', category: '蔬菜', count: 1, unit: '把', location: '冷藏室', expire: addDays(1) },
-        { id: 'i6', name: '盐', category: '其他', count: 1, unit: '包', location: '调味架', expire: addDays(365) },
         { id: 'i7', name: '黄瓜', category: '蔬菜', count: 2, unit: '根', location: '冷藏室', expire: addDays(4) },
         { id: 'i8', name: '蒜', category: '蔬菜', count: 1, unit: '头', location: '冷藏室', expire: addDays(15) },
-        { id: 'i9', name: '紫菜', category: '其他', count: 1, unit: '包', location: '调味架', expire: addDays(200) },
-        { id: 'i10', name: '大米', category: '其他', count: 2000, unit: '克', location: '米桶', expire: '' },
         { id: 'i11', name: '大虾', category: '肉类', count: 300, unit: '克', location: '冷冻室', expire: addDays(15) },
         { id: 'i12', name: '三文鱼', category: '肉类', count: 200, unit: '克', location: '冷冻室', expire: addDays(10) },
         { id: 'i13', name: '包菜', category: '蔬菜', count: 1, unit: '颗', location: '冷藏室', expire: addDays(6) },
         { id: 'i14', name: '生菜', category: '蔬菜', count: 1, unit: '颗', location: '冷藏室', expire: addDays(3) },
         { id: 'i15', name: '西兰花', category: '蔬菜', count: 1, unit: '颗', location: '冷藏室', expire: addDays(4) },
         { id: 'i16', name: '菠菜', category: '蔬菜', count: 1, unit: '把', location: '冷藏室', expire: addDays(2) },
-        { id: 'i17', name: '姜片', category: '其他', count: 1, unit: '块', location: '调味架', expire: addDays(30) }
+        { id: 'i10', name: '大米', category: '主食', count: 2000, unit: '克', location: '米桶', expire: '' }
       ],
       recipes: [
         {
@@ -1177,7 +1174,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
-  var CATEGORIES = ['肉类', '蔬菜', '水果', '蛋奶', '其他'];
+  var CATEGORIES = ['肉类', '蔬菜', '水果', '蛋奶', '主食'];
 
   /* 点菜页左侧分类定义 */
   var ORDER_CATS = [
