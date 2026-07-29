@@ -11,7 +11,7 @@
   // 默认种子数据
   function seed() {
     var s = {
-      family: { id: 'f1', name: '幸福一家' },
+      family: { id: 'f1', name: '蘑菇屋' },
       members: [
         { id: 'm1', name: '毛毛', role: '管理员', avatar: '👧' },
         { id: 'm2', name: '盖盖', role: '成员', avatar: '👧' }

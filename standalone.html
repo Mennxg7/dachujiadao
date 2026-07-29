@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>小厨神驾到</title>
+  <title>大厨驾到</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="小厨神驾到" />
+  <meta name="apple-mobile-web-app-title" content="大厨驾到" />
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJz48cmVjdCB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgcng9JzIyJyBmaWxsPScjZThhODU0Jy8+PHRleHQgeD0nNTAnIHk9JzczJyBmb250LXNpemU9JzU4JyB0ZXh0LWFuY2hvcj0nbWlkZGxlJz7wn42zPC90ZXh0Pjwvc3ZnPg==" />
   <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJz48cmVjdCB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgcng9JzIyJyBmaWxsPScjZThhODU0Jy8+PHRleHQgeD0nNTAnIHk9JzczJyBmb250LXNpemU9JzU4JyB0ZXh0LWFuY2hvcj0nbWlkZGxlJz7wn42zPC90ZXh0Pjwvc3ZnPg==" />
   <style>/* ============================================================
@@ -583,8 +583,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <div class="phone">
     <!-- 顶部栏 -->
     <header class="app-header">
-      <div class="app-header__title" id="headerTitle">小厨神驾到</div>
-      <div class="app-header__sub" id="headerSub">家庭：—</div>
+      <div class="app-header__title" id="headerTitle">大厨驾到</div>
     </header>
 
     <!-- 主内容区 -->
@@ -729,7 +728,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   // 默认种子数据
   function seed() {
     var s = {
-      family: { id: 'f1', name: '幸福一家' },
+      family: { id: 'f1', name: '蘑菇屋' },
       members: [
         { id: 'm1', name: '毛毛', role: '管理员', avatar: '👧' },
         { id: 'm2', name: '盖盖', role: '成员', avatar: '👧' }
@@ -1086,6 +1085,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   /* 分类 → emoji 映射（用于菜单/食记分组标题） */
   var CAT_ICON_MAP = { '荤菜':'🥩', '素菜':'🥬', '减脂':'🥗', '汤类':'🍲', '饭面':'🍜', '早餐':'🍳', '主食':'🍚', '水果':'🍓', '甜甜':'🍰', '家常菜':'🏠' };
 
+  /* 菜谱可选标签（新增/编辑菜谱用多选框） */
+  var RECIPE_TAGS = ['荤菜', '素菜', '减脂', '汤类', '饭面', '家常菜'];
+
   /* 取菜谱主分类（用于配色/水彩占位） */
   function primaryCat(r) { return (r && r.tags && r.tags[0]) || '其他'; }
 
@@ -1123,8 +1125,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     $$('.tab').forEach(function (b) { b.classList.toggle('tab--active', b.dataset.tab === tab); });
 
     // header
-    $('#headerTitle').textContent = '小厨神驾到';
-    $('#headerSub').textContent = '家庭：' + (Store.get().family.name || '未命名');
+    $('#headerTitle').textContent = '大厨驾到';
 
     currentTab = tab;
 
@@ -1648,11 +1649,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       var cover = r.cover
         ? '<div class="recipe-card__cover" style="background-image:url(' + r.cover + ')"></div>'
         : '<div class="recipe-card__cover recipe-card__cover--ph">' + esc(r.name.slice(0, 1)) + '</div>';
+      var tagsHtml = (r.tags || []).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
       card.innerHTML =
         cover +
         '<div class="recipe-card__body">' +
-          '<div class="recipe-card__name">' + esc(r.name) + '</div>' +
-          '<div class="tags">' + (r.tags || []).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div>' +
+          '<div class="recipe-card__name">' + esc(r.name) + (tagsHtml ? ' ' + tagsHtml : '') + '</div>' +
           '<div class="recipe-card__acts">' +
             '<button class="btn btn--sm btn--ghost" data-act="view" data-id="' + r.id + '">查看</button>' +
             '<button class="btn btn--sm btn--ghost" data-act="edit" data-id="' + r.id + '">编辑</button>' +
@@ -1688,7 +1689,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   function recipeForm(r) {
     r = r || {};
     var name = input({ value: r.name || '', placeholder: '菜名' });
-    var tags = input({ value: (r.tags || []).join('、'), placeholder: '标签（如 荤菜、汤类，用、分隔）' });
+
+    // 标签：多选框（荤菜 / 素菜 / 减脂 / 汤类 / 饭面 / 家常菜）
+    var tagBox = el('div', 'checks');
+    RECIPE_TAGS.forEach(function (t) {
+      var lab = el('label', 'check');
+      var cb = el('input'); cb.type = 'checkbox'; cb.value = t;
+      if ((r.tags || []).indexOf(t) >= 0) cb.checked = true;
+      lab.appendChild(cb); lab.appendChild(document.createTextNode(t));
+      tagBox.appendChild(lab);
+    });
 
     var coverInput = input({ type: 'file', accept: 'image/*' });
     var coverPreview = el('div', 'cover-preview');
@@ -1729,7 +1739,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
     var box = el('div');
     box.appendChild(field('菜名', name));
-    box.appendChild(field('标签', tags));
+    box.appendChild(field('标签', tagBox));
     box.appendChild(field('封面图', coverInput));
     box.appendChild(coverPreview);
     box.appendChild(el('div', 'sub-title', '所需食材 <button class="btn btn--sm" id="addIng">＋</button>'));
@@ -1748,7 +1758,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       }).filter(function (x) { return x.text; });
       var payload = {
         name: name.value.trim(),
-        tags: tags.value.split('、').map(function (s) { return s.trim(); }).filter(Boolean),
+        tags: $$('input:checked', tagBox).map(function (c) { return c.value; }),
         cover: coverData, ingredients: ings, steps: steps
       };
       if (!payload.name) { toast('请填写菜名'); return; }
@@ -1760,6 +1770,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       var ai = $('#addIng'); if (ai) ai.onclick = function () { addIngRow(); };
       var as = $('#addStep'); if (as) as.onclick = function () { addStepRow(); };
     }, 0);
+    box.appendChild(save);
     return box;
   }
 
@@ -1865,8 +1876,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
     // 我的
     $('#btnSaveFamily').onclick = function () {
-      Store.get().family.name = $('#familyName').value.trim() || '未命名';
-      Store.persist(); $('#headerSub').textContent = '家庭：' + Store.get().family.name; toast('已保存');
+      Store.get().family.name = $('#familyName').value.trim() || '蘑菇屋';
+      Store.persist(); toast('已保存');
     };
     $('#btnBackFromDiary').onclick = function () { switchTab('mine'); };
     $('#btnDeleteDiary').onclick = function () {

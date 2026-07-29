@@ -30,6 +30,9 @@
   /* 分类 → emoji 映射（用于菜单/食记分组标题） */
   var CAT_ICON_MAP = { '荤菜':'🥩', '素菜':'🥬', '减脂':'🥗', '汤类':'🍲', '饭面':'🍜', '早餐':'🍳', '主食':'🍚', '水果':'🍓', '甜甜':'🍰', '家常菜':'🏠' };
 
+  /* 菜谱可选标签（新增/编辑菜谱用多选框） */
+  var RECIPE_TAGS = ['荤菜', '素菜', '减脂', '汤类', '饭面', '家常菜'];
+
   /* 取菜谱主分类（用于配色/水彩占位） */
   function primaryCat(r) { return (r && r.tags && r.tags[0]) || '其他'; }
 
@@ -67,8 +70,7 @@
     $$('.tab').forEach(function (b) { b.classList.toggle('tab--active', b.dataset.tab === tab); });
 
     // header
-    $('#headerTitle').textContent = '小厨神驾到';
-    $('#headerSub').textContent = '家庭：' + (Store.get().family.name || '未命名');
+    $('#headerTitle').textContent = '大厨驾到';
 
     currentTab = tab;
 
@@ -592,11 +594,11 @@
       var cover = r.cover
         ? '<div class="recipe-card__cover" style="background-image:url(' + r.cover + ')"></div>'
         : '<div class="recipe-card__cover recipe-card__cover--ph">' + esc(r.name.slice(0, 1)) + '</div>';
+      var tagsHtml = (r.tags || []).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
       card.innerHTML =
         cover +
         '<div class="recipe-card__body">' +
-          '<div class="recipe-card__name">' + esc(r.name) + '</div>' +
-          '<div class="tags">' + (r.tags || []).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div>' +
+          '<div class="recipe-card__name">' + esc(r.name) + (tagsHtml ? ' ' + tagsHtml : '') + '</div>' +
           '<div class="recipe-card__acts">' +
             '<button class="btn btn--sm btn--ghost" data-act="view" data-id="' + r.id + '">查看</button>' +
             '<button class="btn btn--sm btn--ghost" data-act="edit" data-id="' + r.id + '">编辑</button>' +
@@ -632,7 +634,16 @@
   function recipeForm(r) {
     r = r || {};
     var name = input({ value: r.name || '', placeholder: '菜名' });
-    var tags = input({ value: (r.tags || []).join('、'), placeholder: '标签（如 荤菜、汤类，用、分隔）' });
+
+    // 标签：多选框（荤菜 / 素菜 / 减脂 / 汤类 / 饭面 / 家常菜）
+    var tagBox = el('div', 'checks');
+    RECIPE_TAGS.forEach(function (t) {
+      var lab = el('label', 'check');
+      var cb = el('input'); cb.type = 'checkbox'; cb.value = t;
+      if ((r.tags || []).indexOf(t) >= 0) cb.checked = true;
+      lab.appendChild(cb); lab.appendChild(document.createTextNode(t));
+      tagBox.appendChild(lab);
+    });
 
     var coverInput = input({ type: 'file', accept: 'image/*' });
     var coverPreview = el('div', 'cover-preview');
@@ -673,7 +684,7 @@
 
     var box = el('div');
     box.appendChild(field('菜名', name));
-    box.appendChild(field('标签', tags));
+    box.appendChild(field('标签', tagBox));
     box.appendChild(field('封面图', coverInput));
     box.appendChild(coverPreview);
     box.appendChild(el('div', 'sub-title', '所需食材 <button class="btn btn--sm" id="addIng">＋</button>'));
@@ -692,7 +703,7 @@
       }).filter(function (x) { return x.text; });
       var payload = {
         name: name.value.trim(),
-        tags: tags.value.split('、').map(function (s) { return s.trim(); }).filter(Boolean),
+        tags: $$('input:checked', tagBox).map(function (c) { return c.value; }),
         cover: coverData, ingredients: ings, steps: steps
       };
       if (!payload.name) { toast('请填写菜名'); return; }
@@ -704,6 +715,7 @@
       var ai = $('#addIng'); if (ai) ai.onclick = function () { addIngRow(); };
       var as = $('#addStep'); if (as) as.onclick = function () { addStepRow(); };
     }, 0);
+    box.appendChild(save);
     return box;
   }
 
@@ -809,8 +821,8 @@
 
     // 我的
     $('#btnSaveFamily').onclick = function () {
-      Store.get().family.name = $('#familyName').value.trim() || '未命名';
-      Store.persist(); $('#headerSub').textContent = '家庭：' + Store.get().family.name; toast('已保存');
+      Store.get().family.name = $('#familyName').value.trim() || '蘑菇屋';
+      Store.persist(); toast('已保存');
     };
     $('#btnBackFromDiary').onclick = function () { switchTab('mine'); };
     $('#btnDeleteDiary').onclick = function () {
