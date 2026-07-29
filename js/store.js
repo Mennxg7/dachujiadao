@@ -37,7 +37,7 @@
       ],
       recipes: [
         {
-          id: 'r1', name: '红烧肉！！', cover: '', tags: ['荤菜'],
+          id: 'r1', name: '红烧肉！！', cover: '', tags: ['肉肉'],
           ingredients: [
             { name: '五花肉', amount: 500, unit: 'g' },
             { name: '姜片', amount: 4, unit: '片' },
@@ -50,7 +50,7 @@
           ]
         },
         {
-          id: 'r2', name: '糖醋排骨', cover: '', tags: ['荤菜'],
+          id: 'r2', name: '糖醋排骨', cover: '', tags: ['肉肉'],
           ingredients: [
             { name: '排骨', amount: 500, unit: 'g' },
             { name: '姜片', amount: '适量', unit: '' },
@@ -63,7 +63,7 @@
           ]
         },
         {
-          id: 'r3', name: '蒜蓉虾', cover: '', tags: ['荤菜'],
+          id: 'r3', name: '蒜蓉虾', cover: '', tags: ['肉肉'],
           ingredients: [
             { name: '大虾', amount: '适量', unit: '' },
             { name: '蒜', amount: 3, unit: '勺' },
@@ -76,7 +76,7 @@
           ]
         },
         {
-          id: 'r4', name: '煎三文鱼', cover: '', tags: ['荤菜', '减脂'],
+          id: 'r4', name: '煎三文鱼', cover: '', tags: ['肉肉', '减脂'],
           ingredients: [
             { name: '三文鱼', amount: 1, unit: '块' },
             { name: '盐', amount: '适量', unit: '' },
@@ -89,7 +89,7 @@
           ]
         },
         {
-          id: 'r5', name: '西红柿炒蛋', cover: '', tags: ['素菜'],
+          id: 'r5', name: '西红柿炒蛋', cover: '', tags: ['菜菜'],
           ingredients: [
             { name: '鸡蛋', amount: 3, unit: '个' },
             { name: '西红柿', amount: 2, unit: '个' },
@@ -103,7 +103,7 @@
           ]
         },
         {
-          id: 'r6', name: '炒包菜', cover: '', tags: ['素菜'],
+          id: 'r6', name: '炒包菜', cover: '', tags: ['菜菜'],
           ingredients: [
             { name: '包菜', amount: '半颗', unit: '' },
             { name: '蒜', amount: '适量', unit: '' },
@@ -116,7 +116,7 @@
           ]
         },
         {
-          id: 'r7', name: '蚝油生菜', cover: '', tags: ['素菜'],
+          id: 'r7', name: '蚝油生菜', cover: '', tags: ['菜菜'],
           ingredients: [
             { name: '生菜', amount: 1, unit: '颗' },
             { name: '蒜', amount: 1, unit: '勺' },
@@ -129,7 +129,7 @@
           ]
         },
         {
-          id: 'r8', name: '菠菜', cover: '', tags: ['素菜', '减脂'],
+          id: 'r8', name: '菠菜', cover: '', tags: ['菜菜', '减脂'],
           ingredients: [
             { name: '菠菜', amount: 1, unit: '把' },
             { name: '蒜', amount: '适量', unit: '' },
@@ -142,7 +142,7 @@
           ]
         },
         {
-          id: 'r9', name: '蒜蓉西兰花', cover: '', tags: ['素菜', '减脂'],
+          id: 'r9', name: '蒜蓉西兰花', cover: '', tags: ['菜菜', '减脂'],
           ingredients: [
             { name: '西兰花', amount: 1, unit: '颗' },
             { name: '蒜', amount: 1, unit: '勺' },
@@ -155,7 +155,7 @@
           ]
         },
         {
-          id: 'r10', name: '麻婆豆腐', cover: '', tags: ['素菜'],
+          id: 'r10', name: '麻婆豆腐', cover: '', tags: ['菜菜'],
           ingredients: [
             { name: '豆腐', amount: 1, unit: '块' },
             { name: '肉末', amount: 100, unit: 'g' },
@@ -244,7 +244,7 @@
           ]
         },
         {
-          id: 'r17', name: '凉拌黄瓜', cover: '', tags: ['素菜', '减脂'],
+          id: 'r17', name: '凉拌黄瓜', cover: '', tags: ['菜菜', '减脂'],
           ingredients: [
             { name: '黄瓜', amount: 2, unit: '根' },
             { name: '蒜', amount: 1, unit: '头' },

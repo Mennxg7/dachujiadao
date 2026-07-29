@@ -754,7 +754,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       ],
       recipes: [
         {
-          id: 'r1', name: '红烧肉！！', cover: '', tags: ['荤菜'],
+          id: 'r1', name: '红烧肉！！', cover: '', tags: ['肉肉'],
           ingredients: [
             { name: '五花肉', amount: 500, unit: 'g' },
             { name: '姜片', amount: 4, unit: '片' },
@@ -767,7 +767,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           ]
         },
         {
-          id: 'r2', name: '糖醋排骨', cover: '', tags: ['荤菜'],
+          id: 'r2', name: '糖醋排骨', cover: '', tags: ['肉肉'],
           ingredients: [
             { name: '排骨', amount: 500, unit: 'g' },
             { name: '姜片', amount: '适量', unit: '' },
@@ -780,7 +780,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           ]
         },
         {
-          id: 'r3', name: '蒜蓉虾', cover: '', tags: ['荤菜'],
+          id: 'r3', name: '蒜蓉虾', cover: '', tags: ['肉肉'],
           ingredients: [
             { name: '大虾', amount: '适量', unit: '' },
             { name: '蒜', amount: 3, unit: '勺' },
@@ -793,7 +793,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           ]
         },
         {
-          id: 'r4', name: '煎三文鱼', cover: '', tags: ['荤菜', '减脂'],
+          id: 'r4', name: '煎三文鱼', cover: '', tags: ['肉肉', '减脂'],
           ingredients: [
             { name: '三文鱼', amount: 1, unit: '块' },
             { name: '盐', amount: '适量', unit: '' },
@@ -806,7 +806,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           ]
         },
         {
-          id: 'r5', name: '西红柿炒蛋', cover: '', tags: ['素菜'],
+          id: 'r5', name: '西红柿炒蛋', cover: '', tags: ['菜菜'],
           ingredients: [
             { name: '鸡蛋', amount: 3, unit: '个' },
             { name: '西红柿', amount: 2, unit: '个' },
@@ -820,7 +820,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           ]
         },
         {
-          id: 'r6', name: '炒包菜', cover: '', tags: ['素菜'],
+          id: 'r6', name: '炒包菜', cover: '', tags: ['菜菜'],
           ingredients: [
             { name: '包菜', amount: '半颗', unit: '' },
             { name: '蒜', amount: '适量', unit: '' },
@@ -833,7 +833,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           ]
         },
         {
-          id: 'r7', name: '蚝油生菜', cover: '', tags: ['素菜'],
+          id: 'r7', name: '蚝油生菜', cover: '', tags: ['菜菜'],
           ingredients: [
             { name: '生菜', amount: 1, unit: '颗' },
             { name: '蒜', amount: 1, unit: '勺' },
@@ -846,7 +846,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           ]
         },
         {
-          id: 'r8', name: '菠菜', cover: '', tags: ['素菜', '减脂'],
+          id: 'r8', name: '菠菜', cover: '', tags: ['菜菜', '减脂'],
           ingredients: [
             { name: '菠菜', amount: 1, unit: '把' },
             { name: '蒜', amount: '适量', unit: '' },
@@ -859,7 +859,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           ]
         },
         {
-          id: 'r9', name: '蒜蓉西兰花', cover: '', tags: ['素菜', '减脂'],
+          id: 'r9', name: '蒜蓉西兰花', cover: '', tags: ['菜菜', '减脂'],
           ingredients: [
             { name: '西兰花', amount: 1, unit: '颗' },
             { name: '蒜', amount: 1, unit: '勺' },
@@ -872,7 +872,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           ]
         },
         {
-          id: 'r10', name: '麻婆豆腐', cover: '', tags: ['素菜'],
+          id: 'r10', name: '麻婆豆腐', cover: '', tags: ['菜菜'],
           ingredients: [
             { name: '豆腐', amount: 1, unit: '块' },
             { name: '肉末', amount: 100, unit: 'g' },
@@ -961,7 +961,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           ]
         },
         {
-          id: 'r17', name: '凉拌黄瓜', cover: '', tags: ['素菜', '减脂'],
+          id: 'r17', name: '凉拌黄瓜', cover: '', tags: ['菜菜', '减脂'],
           ingredients: [
             { name: '黄瓜', amount: 2, unit: '根' },
             { name: '蒜', amount: 1, unit: '头' },
@@ -1075,25 +1075,26 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   /* 点菜页左侧分类定义 */
   var ORDER_CATS = [
     { icon: '🔍', label: '全部', value: '全部' },
+    { icon: '🥩', label: '肉肉', value: '肉肉' },
+    { icon: '🥬', label: '菜菜', value: '菜菜' },
     { icon: '🍜', label: '饭面', value: '饭面' },
-    { icon: '🥩', label: '肉类', value: '荤菜' },
-    { icon: '🥬', label: '菜菜', value: '素菜' },
-    { icon: '🍓', label: '水果', value: '减脂' },
+    { icon: '🥗', label: '减脂', value: '减脂' },
+    { icon: '🍓', label: '水果', value: '水果' },
     { icon: '🍲', label: '汤类', value: '汤类' }
   ];
 
   /* 分类 → emoji 映射（用于菜单/食记分组标题） */
-  var CAT_ICON_MAP = { '荤菜':'🥩', '素菜':'🥬', '减脂':'🥗', '汤类':'🍲', '饭面':'🍜', '早餐':'🍳', '主食':'🍚', '水果':'🍓', '甜甜':'🍰', '家常菜':'🏠' };
+  var CAT_ICON_MAP = { '肉肉':'🥩', '菜菜':'🥬', '减脂':'🥗', '汤类':'🍲', '饭面':'🍜', '水果':'🍓' };
 
   /* 菜谱可选标签（新增/编辑菜谱用多选框） */
-  var RECIPE_TAGS = ['荤菜', '素菜', '减脂', '汤类', '饭面', '家常菜'];
+  var RECIPE_TAGS = ['肉肉', '菜菜', '饭面', '减脂', '水果', '汤类'];
 
   /* 取菜谱主分类（用于配色/水彩占位） */
   function primaryCat(r) { return (r && r.tags && r.tags[0]) || '其他'; }
 
   /* 水彩风格手绘美食占位图（按分类着色，柔和晕染感） */
   var WATERCOLOR_MAP = {
-    '荤菜': '#d98b5a', '素菜': '#8bbf6a', '饭面': '#e8c46a',
+    '肉肉': '#d98b5a', '菜菜': '#8bbf6a', '饭面': '#e8c46a',
     '汤类': '#e0a06a', '减脂': '#e88a8a', '水果': '#e88a8a', '其他': '#cbb08a'
   };
   function watercolorCover(cat) {

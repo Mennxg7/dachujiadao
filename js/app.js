@@ -20,25 +20,26 @@
   /* 点菜页左侧分类定义 */
   var ORDER_CATS = [
     { icon: '🔍', label: '全部', value: '全部' },
+    { icon: '🥩', label: '肉肉', value: '肉肉' },
+    { icon: '🥬', label: '菜菜', value: '菜菜' },
     { icon: '🍜', label: '饭面', value: '饭面' },
-    { icon: '🥩', label: '肉类', value: '荤菜' },
-    { icon: '🥬', label: '菜菜', value: '素菜' },
-    { icon: '🍓', label: '水果', value: '减脂' },
+    { icon: '🥗', label: '减脂', value: '减脂' },
+    { icon: '🍓', label: '水果', value: '水果' },
     { icon: '🍲', label: '汤类', value: '汤类' }
   ];
 
   /* 分类 → emoji 映射（用于菜单/食记分组标题） */
-  var CAT_ICON_MAP = { '荤菜':'🥩', '素菜':'🥬', '减脂':'🥗', '汤类':'🍲', '饭面':'🍜', '早餐':'🍳', '主食':'🍚', '水果':'🍓', '甜甜':'🍰', '家常菜':'🏠' };
+  var CAT_ICON_MAP = { '肉肉':'🥩', '菜菜':'🥬', '减脂':'🥗', '汤类':'🍲', '饭面':'🍜', '水果':'🍓' };
 
   /* 菜谱可选标签（新增/编辑菜谱用多选框） */
-  var RECIPE_TAGS = ['荤菜', '素菜', '减脂', '汤类', '饭面', '家常菜'];
+  var RECIPE_TAGS = ['肉肉', '菜菜', '饭面', '减脂', '水果', '汤类'];
 
   /* 取菜谱主分类（用于配色/水彩占位） */
   function primaryCat(r) { return (r && r.tags && r.tags[0]) || '其他'; }
 
   /* 水彩风格手绘美食占位图（按分类着色，柔和晕染感） */
   var WATERCOLOR_MAP = {
-    '荤菜': '#d98b5a', '素菜': '#8bbf6a', '饭面': '#e8c46a',
+    '肉肉': '#d98b5a', '菜菜': '#8bbf6a', '饭面': '#e8c46a',
     '汤类': '#e0a06a', '减脂': '#e88a8a', '水果': '#e88a8a', '其他': '#cbb08a'
   };
   function watercolorCover(cat) {
