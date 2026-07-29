@@ -78,12 +78,13 @@
     if (tab === 'kitchen') renderKitchen();
   }
 
-  /* 进入子页面（厨房等） */
+  /* 进入子页面（厨房 / 食记详情等） */
   function goToSubPage(page) {
     $$('.page').forEach(function (p) { p.hidden = true; });
     var target = $('[data-page="' + page + '"]');
     if (target) target.hidden = false;
     $$('.tab').forEach(function (b) { b.classList.remove('tab--active'); });
+    currentTab = page;
     if (page === 'kitchen') renderKitchen();
   }
 
@@ -496,8 +497,17 @@
   }
 
   /* =========================================================
-   *  3. 食记页
+   *  3. 食记页（两级结构：我的里先列日期，点进去看当天菜）
    * ========================================================= */
+  var currentDiaryId = '';
+
+  function fmtDateLabel(dateStr) {
+    var dt = new Date(dateStr + 'T12:00:00');
+    var wd = ['日','一','二','三','四','五','六'][dt.getDay()];
+    return { md: (dt.getMonth() + 1) + '-' + dt.getDate(), week: '周' + wd,
+             full: (dt.getMonth() + 1) + '月' + dt.getDate() + '日 周' + wd };
+  }
+
   function renderDiary() {
     var d = Store.get();
     var container = $('#diaryList'); if (!container) return;
@@ -508,31 +518,59 @@
       return;
     }
 
+    // 第一层：按日期列可点入口
     d.diary.forEach(function (entry) {
-      var card = el('div', 'diary-card');
+      var lab = fmtDateLabel(entry.date);
+      var row = el('div', 'mine-row mine-row--link');
+      row.dataset.goto = 'diary';
+      row.dataset.did = entry.id;
+      row.innerHTML =
+        '<span class="mine-row__icon">📅</span>' +
+        '<span class="mine-row__main">' +
+          '<span class="mine-row__name">' + (entry.date === Store.today() ? '今天 · ' : '') + lab.md + ' ' + lab.week + '</span>' +
+          '<span class="mine-row__sub">共 ' + entry.dishes.length + ' 道菜</span>' +
+        '</span>' +
+        '<span class="arrow">›</span>';
+      container.appendChild(row);
+    });
+  }
 
-      // 头部：日期 + 删除
-      var head = el('div', 'diary-card__head');
-      var dateObj = new Date(entry.date + 'T12:00:00');
-      var weekDays = ['日','一','二','三','四','五','六'];
-      var badge = el('div', 'diary-date-badge');
-      badge.innerHTML = '<span class="diary-date-badge__day">' + dateObj.getDate() + '</span><span class="diary-date-badge__weekday">周' + weekDays[dateObj.getDay()] + '</span>';
+  /* 第二层：进入某一天的食记详情 */
+  function openDiaryDetail(did) {
+    currentDiaryId = did;
+    $$('.page').forEach(function (p) { p.hidden = true; });
+    var target = $('[data-page="diary"]');
+    if (target) target.hidden = false;
+    $$('.tab').forEach(function (b) { b.classList.remove('tab--active'); });
+    currentTab = 'diary';
+    renderDiaryDetail();
+  }
 
-      var info = el('div', 'diary-date-info');
-      info.innerHTML = '<div class="diary-date-info__label">' + (entry.date === Store.today() ? '今天' : entry.date) + '</div>' +
-        '<div class="diary-date-info__sub">共 ' + entry.dishes.length + ' 道菜</div>';
+  function renderDiaryDetail() {
+    var d = Store.get();
+    var entry = d.diary.find(function (x) { return x.id === currentDiaryId; });
+    var list = $('#diaryDetailList'); if (!list) return;
+    list.innerHTML = '';
+    if (!entry) { list.appendChild(el('div', 'empty', '没有这条食记')); return; }
 
-      var delBtn = el('span', 'diary-date-del', '删除');
-      delBtn.dataset.did = entry.id;
+    var lab = fmtDateLabel(entry.date);
+    $('#diaryDetailTitle').textContent = lab.full;
 
-      head.appendChild(badge); head.appendChild(info); head.appendChild(delBtn);
-      card.appendChild(head);
-
-      // 只显示菜名（不显示图片、不按分类）
-      var names = entry.dishes.map(function (x) { return x.name; }).join('、');
-      card.appendChild(el('div', 'diary-names', esc(names)));
-
-      container.appendChild(card);
+    entry.dishes.forEach(function (dish) {
+      var cat = (dish.tags && dish.tags[0]) || '其他';
+      var card = el('div', 'card card--row');
+      var cover = dish.cover
+        ? '<div class="diary-dish-item__img" style="background-image:url(' + dish.cover + ');background-size:cover;background-position:center;"></div>'
+        : '<div class="diary-dish-item__img">' + esc((dish.name || '?').slice(0, 1)) + '</div>';
+      var tags = (dish.tags || []).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
+      var cnt = dish.count && dish.count > 1 ? ' ×' + dish.count : '';
+      card.innerHTML =
+        cover +
+        '<div class="card__main">' +
+          '<div class="card__title">' + esc(dish.name) + cnt + '</div>' +
+          '<div class="tags">' + tags + '</div>' +
+        '</div>';
+      list.appendChild(card);
     });
   }
 
@@ -677,7 +715,7 @@
     $('#familyName').value = d.family.name || '';
     var list = $('#memberList'); list.innerHTML = '';
     if (!d.members.length) {
-      list.appendChild(el('div', 'mine-empty-row', '还没有成员，点右上角"＋ 添加"'));
+      list.appendChild(el('div', 'mine-empty-row', '还没有成员'));
       return;
     }
     d.members.forEach(function (m) {
@@ -687,8 +725,7 @@
         '<span class="mine-row__main">' +
           '<span class="mine-row__name">' + esc(m.name) + '</span>' +
           '<span class="mine-row__sub">' + esc(m.role) + '</span>' +
-        '</span>' +
-        '<button class="btn btn--sm btn--ghost" data-act="del" data-id="' + m.id + '">移除</button>';
+        '</span>';
       list.appendChild(row);
     });
   }
@@ -775,16 +812,23 @@
       Store.get().family.name = $('#familyName').value.trim() || '未命名';
       Store.persist(); $('#headerSub').textContent = '家庭：' + Store.get().family.name; toast('已保存');
     };
-    $('#btnAddMember').onclick = function () { openModal('添加成员', memberForm()); };
-    $('#btnSeed').onclick = function () { Store.reseed(); switchTab(currentTab); toast('已载入示例'); };
-    $('#btnReset').onclick = function () {
-      if (confirm('确定清空所有数据？')) { Store.reset(); switchTab(currentTab); toast('已清空'); }
+    $('#btnBackFromDiary').onclick = function () { switchTab('mine'); };
+    $('#btnDeleteDiary').onclick = function () {
+      if (!currentDiaryId) return;
+      if (confirm('确定删除这条食记？')) {
+        Store.removeDiary(currentDiaryId); Store.persist();
+        toast('已删除'); switchTab('mine');
+      }
     };
 
     // 厨房入口等子页面跳转（data-goto）
     $('#screen').addEventListener('click', function (e) {
       var goto = e.target.closest('[data-goto]');
-      if (goto) { goToSubPage(goto.dataset.goto); return; }
+      if (goto) {
+        if (goto.dataset.goto === 'diary') openDiaryDetail(goto.dataset.did);
+        else goToSubPage(goto.dataset.goto);
+        return;
+      }
 
       var btn = e.target.closest('[data-act]'); if (!btn) return;
       var act = btn.dataset.act, id = btn.dataset.id;
@@ -813,8 +857,7 @@
         else if (act === 'del') { if (confirm('删除该菜谱？')) { Store.removeRecipe(id); Store.persist(); renderKitchen(); } }
       }
 
-      // 我的-成员
-      if (currentTab === 'mine' && act === 'del') { Store.removeMember(id); Store.persist(); renderMine(); }
+      // 我的-成员：固定不可移除，无操作
     });
 
     // 食记页删除
