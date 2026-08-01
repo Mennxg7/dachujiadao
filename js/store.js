@@ -34,7 +34,7 @@
       ],
       recipes: [
         {
-          id: 'r1', name: '红烧肉！！', cover: '', tags: ['肉肉'],
+          id: 'r1', name: '红烧肉', cover: 'pictures/红烧肉.png', tags: ['肉肉'],
           ingredients: [
             { name: '五花肉', amount: 500, unit: 'g' },
             { name: '姜片', amount: 4, unit: '片' },
@@ -47,7 +47,7 @@
           ]
         },
         {
-          id: 'r2', name: '糖醋排骨', cover: '', tags: ['肉肉'],
+          id: 'r2', name: '糖醋排骨', cover: 'pictures/煎牛排.png', tags: ['肉肉'],
           ingredients: [
             { name: '排骨', amount: 500, unit: 'g' },
             { name: '姜片', amount: '适量', unit: '' },
@@ -60,7 +60,7 @@
           ]
         },
         {
-          id: 'r3', name: '蒜蓉虾', cover: '', tags: ['肉肉'],
+          id: 'r3', name: '蒜蓉虾', cover: 'pictures/煎牛排.png', tags: ['肉肉'],
           ingredients: [
             { name: '大虾', amount: '适量', unit: '' },
             { name: '蒜', amount: 3, unit: '勺' },
@@ -73,7 +73,7 @@
           ]
         },
         {
-          id: 'r4', name: '煎三文鱼', cover: '', tags: ['肉肉', '减脂'],
+          id: 'r4', name: '煎三文鱼', cover: 'pictures/煎牛排.png', tags: ['肉肉', '减脂'],
           ingredients: [
             { name: '三文鱼', amount: 1, unit: '块' },
             { name: '盐', amount: '适量', unit: '' },
@@ -86,7 +86,7 @@
           ]
         },
         {
-          id: 'r5', name: '西红柿炒蛋', cover: '', tags: ['菜菜'],
+          id: 'r5', name: '西红柿炒蛋', cover: 'pictures/炒包菜.png', tags: ['菜菜'],
           ingredients: [
             { name: '鸡蛋', amount: 3, unit: '个' },
             { name: '西红柿', amount: 2, unit: '个' },
@@ -100,7 +100,7 @@
           ]
         },
         {
-          id: 'r6', name: '炒包菜', cover: '', tags: ['菜菜'],
+          id: 'r6', name: '炒包菜', cover: 'pictures/炒包菜.png', tags: ['菜菜'],
           ingredients: [
             { name: '包菜', amount: '半颗', unit: '' },
             { name: '蒜', amount: '适量', unit: '' },
@@ -113,7 +113,7 @@
           ]
         },
         {
-          id: 'r7', name: '蚝油生菜', cover: '', tags: ['菜菜'],
+          id: 'r7', name: '蚝油生菜', cover: 'pictures/蚝油生菜.png', tags: ['菜菜'],
           ingredients: [
             { name: '生菜', amount: 1, unit: '颗' },
             { name: '蒜', amount: 1, unit: '勺' },
@@ -126,7 +126,7 @@
           ]
         },
         {
-          id: 'r8', name: '菠菜', cover: '', tags: ['菜菜', '减脂'],
+          id: 'r8', name: '菠菜', cover: 'pictures/菠菜.png', tags: ['菜菜', '减脂'],
           ingredients: [
             { name: '菠菜', amount: 1, unit: '把' },
             { name: '蒜', amount: '适量', unit: '' },
@@ -139,7 +139,7 @@
           ]
         },
         {
-          id: 'r9', name: '蒜蓉西兰花', cover: '', tags: ['菜菜', '减脂'],
+          id: 'r9', name: '蒜蓉西兰花', cover: 'pictures/炒小青菜.png', tags: ['菜菜', '减脂'],
           ingredients: [
             { name: '西兰花', amount: 1, unit: '颗' },
             { name: '蒜', amount: 1, unit: '勺' },
@@ -152,7 +152,7 @@
           ]
         },
         {
-          id: 'r10', name: '麻婆豆腐', cover: '', tags: ['菜菜'],
+          id: 'r10', name: '麻婆豆腐', cover: 'pictures/麻婆豆腐.png', tags: ['菜菜'],
           ingredients: [
             { name: '豆腐', amount: 1, unit: '块' },
             { name: '肉末', amount: 100, unit: 'g' },
@@ -165,7 +165,7 @@
           ]
         },
         {
-          id: 'r11', name: '白米饭', cover: '', tags: ['饭面'],
+          id: 'r11', name: '白米饭', cover: 'pictures/白米饭.png', tags: ['饭面'],
           ingredients: [
             { name: '大米', amount: '适量', unit: '' },
             { name: '水', amount: '适量', unit: '' }
@@ -177,7 +177,7 @@
           ]
         },
         {
-          id: 'r12', name: '麻辣烫', cover: '', tags: ['饭面'],
+          id: 'r12', name: '麻辣烫', cover: 'pictures/金汤肥牛.png', tags: ['饭面'],
           ingredients: [
             { name: '自选食材', amount: '适量', unit: '' },
             { name: '蔬菜', amount: '适量', unit: '' },
@@ -190,7 +190,7 @@
           ]
         },
         {
-          id: 'r13', name: '鸡蛋肉丁炒饭', cover: '', tags: ['饭面'],
+          id: 'r13', name: '鸡蛋肉丁炒饭', cover: 'pictures/咖喱饭.png', tags: ['饭面'],
           ingredients: [
             { name: '隔夜米饭', amount: 1, unit: '碗' },
             { name: '鸡蛋', amount: 2, unit: '个' },
@@ -203,7 +203,7 @@
           ]
         },
         {
-          id: 'r14', name: '虾仁炒饭', cover: '', tags: ['饭面'],
+          id: 'r14', name: '虾仁炒饭', cover: 'pictures/咖喱饭.png', tags: ['饭面'],
           ingredients: [
             { name: '隔夜米饭', amount: 1, unit: '碗' },
             { name: '虾仁', amount: '适量', unit: '' },
@@ -216,7 +216,7 @@
           ]
         },
         {
-          id: 'r15', name: '咖喱饭', cover: '', tags: ['饭面'],
+          id: 'r15', name: '咖喱饭', cover: 'pictures/咖喱饭.png', tags: ['饭面'],
           ingredients: [
             { name: '米饭', amount: 1, unit: '碗' },
             { name: '土豆', amount: 1, unit: '个' },
@@ -229,7 +229,7 @@
           ]
         },
         {
-          id: 'r16', name: '紫菜蛋花汤', cover: '', tags: ['汤类'],
+          id: 'r16', name: '紫菜蛋花汤', cover: 'pictures/凉拌黄瓜.png', tags: ['汤类'],
           ingredients: [
             { name: '紫菜', amount: 1, unit: '包' },
             { name: '鸡蛋', amount: 1, unit: '个' },
@@ -241,7 +241,7 @@
           ]
         },
         {
-          id: 'r17', name: '凉拌黄瓜', cover: '', tags: ['菜菜', '减脂'],
+          id: 'r17', name: '凉拌黄瓜', cover: 'pictures/凉拌黄瓜.png', tags: ['菜菜', '减脂'],
           ingredients: [
             { name: '黄瓜', amount: 2, unit: '根' },
             { name: '蒜', amount: 1, unit: '头' },
@@ -251,11 +251,37 @@
             { text: '黄瓜拍碎切段，蒜剁末。', image: '' },
             { text: '加盐拌匀，冷藏更爽口。', image: '' }
           ]
+        },
+        {
+          id: 'r18', name: '可乐鸡翅', cover: 'pictures/可乐鸡翅.png', tags: ['肉肉'],
+          ingredients: [
+            { name: '鸡翅', amount: 8, unit: '个' },
+            { name: '可乐', amount: 200, unit: 'ml' },
+            { name: '酱油', amount: 2, unit: '勺' }
+          ],
+          steps: [
+            { text: '鸡翅两面划刀焯水去腥。', image: '' },
+            { text: '煎至金黄倒入可乐没过鸡翅。', image: '' },
+            { text: '加酱油大火收汁即可。', image: '' }
+          ]
+        },
+        {
+          id: 'r19', name: '金汤肥牛', cover: 'pictures/金汤肥牛.png', tags: ['饭面'],
+          ingredients: [
+            { name: '肥牛卷', amount: 200, unit: 'g' },
+            { name: '金针菇', amount: 100, unit: 'g' },
+            { name: '火锅底料', amount: 1, unit: '块' }
+          ],
+          steps: [
+            { text: '金针菇洗净铺碗底。', image: '' },
+            { text: '肥牛卷焯水捞出。', image: '' },
+            { text: '金汤底料煮开浇上肥牛。', image: '' }
+          ]
         }
       ],
       menu: [
-        { id: 'o1', recipeId: 'r1', name: '西红柿炒蛋', orderedBy: 'm2', status: '想吃', date: today(), count: 1 },
-        { id: 'o2', recipeId: 'r2', name: '肉末烧茄子', orderedBy: 'm1', status: '想吃', date: today(), count: 1 }
+        { id: 'o1', recipeId: 'r1', name: '红烧肉', orderedBy: 'm2', status: '想吃', date: today(), count: 1 },
+        { id: 'o2', recipeId: 'r2', name: '糖醋排骨', orderedBy: 'm1', status: '想吃', date: today(), count: 1 }
       ],
       diary: []
     };
